@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "deluge.fullname" . }}
+  labels:
+    {{- include "deluge.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "deluge.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "deluge.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - name: {{ .Chart.Name }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - name: webui
+            containerPort: 8112
+            protocol: TCP
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - mountPath: /config
+          name: {{ include "deluge.fullname" . }}-config-pv
+        - mountPath: /downloads
+          name: {{ include "deluge.fullname" . }}-download-pv
+      volumes:
+      - name: {{ include "deluge.fullname" . }}-config-pv
+        persistentVolumeClaim:
+          claimName: {{ include "deluge.fullname" . }}-config-pvc
+      - name: {{ include "deluge.fullname" . }}-download-pv
+        persistentVolumeClaim:
+          claimName: {{ include "deluge.fullname" . }}-download-pvc

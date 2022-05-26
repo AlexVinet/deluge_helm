@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: linuxserver/deluge
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: LoadBalancer
+  management_port: 3000
+  webui_port: 80
+
+storage:
+  configSize: 2Gi
+  downloadSize: 250Gi
+
+timezone: America/New_York
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 1
+    memory: 2Gi

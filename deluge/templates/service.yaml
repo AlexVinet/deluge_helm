@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "deluge.fullname" . }}
+  labels:
+    {{- include "deluge.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "deluge.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: webui
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 8112
+  type: {{ .Values.service.type }}
