@@ -12,3 +12,5 @@ git clone https://github.com/AlexVinet/deluge_helm.git
 cd deluge_helm/deluge/
 helm install deluge -f values.yaml .
 ```
+
+# You need to modify the pv.yaml and pvc.yaml with your own config.
