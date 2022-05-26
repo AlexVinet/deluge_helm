@@ -13,4 +13,4 @@ cd deluge_helm/deluge/
 helm install deluge -f values.yaml .
 ```
 
-# You need to modify the pv.yaml and pvc.yaml with your own config.
+>note You need to modify the pv.yaml and pvc.yaml with your own config.
