@@ -6,7 +6,7 @@ Deluge torrent client helm chart.
 ## installing an deluge_helm
 
 Install deluge service with the following commands:
-
+>You need to install nfs.csi.k8s.io driver before proceeding with the deluge installation.
 ```
 git clone https://github.com/AlexVinet/deluge_helm.git
 cd deluge_helm/deluge/
